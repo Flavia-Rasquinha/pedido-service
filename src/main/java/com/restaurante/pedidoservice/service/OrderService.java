@@ -1,9 +1,11 @@
 package com.restaurante.pedidoservice.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.pedidoservice.dto.OrderDto;
 import com.restaurante.pedidoservice.entity.OrderEntity;
 import com.restaurante.pedidoservice.exception.OrderNotFoundException;
+import com.restaurante.pedidoservice.producer.Producer;
 import com.restaurante.pedidoservice.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,14 +20,28 @@ public class OrderService {
 
     private OrderRepository orderRepository;
     private final ObjectMapper modelMapper;
+    private final Producer producer;
 
-    public OrderDto createOrder(OrderDto order){
+    public OrderDto createOrder(OrderDto order) throws JsonProcessingException {
         var orderEntity = modelMapper.convertValue(order, OrderEntity.class);
 
-        var orderSave = orderRepository.save(orderEntity);
-        return modelMapper.convertValue(orderSave, OrderDto.class);
+        OrderEntity saveOrder = orderRepository.save(orderEntity);
+
+        this.producer.sendMessage(saveOrder);
+
+        return modelMapper.convertValue(saveOrder, OrderDto.class);
     }
 
+    public OrderDto updateOrder(String orderId, OrderDto order) {
+        OrderEntity updateOrder = OrderEntity.builder()
+                .id(orderId)
+                .items(order.items())
+                .totalValue(order.totalValue())
+                .status(order.status())
+                .build();
+
+        return modelMapper.convertValue(orderRepository.save(updateOrder), OrderDto.class);
+    }
     public List<OrderDto> getAllOrders() {
         List<OrderEntity> products = orderRepository.findAll();
         return products.stream()
@@ -33,18 +49,18 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public OrderDto getOrderById(Long id) throws OrderNotFoundException {
+    public OrderDto getOrderById(String id) throws OrderNotFoundException {
         var order = validateOrderId(id);
 
         return modelMapper.convertValue(order, OrderDto.class);
     }
 
-    public void deleteOrder(Long id) {
+    public void deleteOrder(String id) {
         validateOrderId(id);
         orderRepository.deleteById(id);
     }
 
-    private OrderEntity validateOrderId(Long id) {
+    private OrderEntity validateOrderId(String id) {
         Optional<OrderEntity> productOptional = orderRepository.findById(id);
 
         if (productOptional.isEmpty()) {

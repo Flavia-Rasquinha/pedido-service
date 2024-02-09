@@ -1,5 +1,7 @@
 package com.restaurante.pedidoservice.producer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +17,11 @@ public class Producer {
     private static final String TOPIC = "pedido";
 
     private KafkaTemplate<String, String> kafkaTemplate;
+    private ObjectMapper objectMapper;
 
-    public void sendMessage(String message) {
+    public void sendMessage(Object message) throws JsonProcessingException {
         logger.info(String.format("#### -> Producing message -> %s", message));
-        this.kafkaTemplate.send(TOPIC, message);
+        this.kafkaTemplate.send(TOPIC, objectMapper.writeValueAsString(message));
     }
 
 }
