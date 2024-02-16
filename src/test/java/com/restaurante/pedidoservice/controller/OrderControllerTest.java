@@ -3,11 +3,10 @@ package com.restaurante.pedidoservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.pedidoservice.dto.ItemsDto;
 import com.restaurante.pedidoservice.dto.OrderDto;
+import com.restaurante.pedidoservice.entity.OrderEntity;
 import com.restaurante.pedidoservice.exception.OrderNotFoundException;
 import com.restaurante.pedidoservice.service.OrderService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,7 +20,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest(OrderControllerTest.class)
@@ -97,8 +98,18 @@ class OrderControllerTest {
     @Test
     void getOrderByIdSucessTest() throws Exception {
         mockMvc.perform(
-                        get("/order"))
+                        get("/order/1111"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andReturn();
+    }
+
+    @Test
+    void getOrderByIdErrorTest() throws Exception {
+        Mockito.when(orderService.getOrderById(any())).thenThrow(OrderNotFoundException.class);
+
+        mockMvc.perform(
+                        get("/order/1"))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
     }
 

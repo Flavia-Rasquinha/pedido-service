@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -80,7 +81,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void getOrderSuccess() {
+    public void getOrderByIdSuccess() {
 
         Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().status("PRONTO").build()));
         Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder().status("PRONTO").build());
@@ -91,12 +92,38 @@ class OrderServiceTest {
     }
 
     @Test
-    public void getOrderError() {
+    public void getOrderByIdError() {
         Mockito.when(orderRepository.save(any())).thenThrow(OrderNotFoundException.class);
 
         Assertions.assertThrows(OrderNotFoundException.class, () -> {
             orderService.getOrderById("1");
         });
+    }
+
+    @Test
+    public void getOrderSuccess() {
+
+        List<OrderEntity> mockOrder = Arrays.asList(
+                new OrderEntity("1",Collections.singletonList(ItemsDto.builder()
+                        .amount(1).build()),BigDecimal.ONE, "Solicitado"),
+                new OrderEntity("2",Collections.singletonList(ItemsDto.builder()
+                        .amount(1).build()),BigDecimal.ONE, "Solicitado")
+        );
+        Mockito.when(orderRepository.findAll()).thenReturn(mockOrder);
+
+        List<OrderDto> result = orderService.getAllOrders();
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2, result.size());
+    }
+
+    @Test
+    void deleteOrderSucess() {
+        Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().build()));
+
+        orderService.deleteOrder("11111");
+
+        Mockito.verify(orderRepository, Mockito.times(1)).deleteById("11111");
     }
 
     private static OrderDto createOrder() {

@@ -1,6 +1,7 @@
 package com.restaurante.pedidoservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.restaurante.pedidoservice.controller.documentation.SwaggerOrderSpec;
 import com.restaurante.pedidoservice.dto.OrderDto;
 import com.restaurante.pedidoservice.exception.OrderNotFoundException;
 import com.restaurante.pedidoservice.service.OrderService;
@@ -17,7 +18,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/order")
-public class OrderController {
+public class OrderController implements SwaggerOrderSpec {
 
     private OrderService orderService;
 
@@ -30,7 +31,7 @@ public class OrderController {
 
     @PatchMapping("/{id}")
     @Transactional
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable @NotNull String id, @RequestBody @Valid String status) {
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable @NotNull String id, @RequestBody @Valid String status) throws OrderNotFoundException  {
         var productSave = orderService.updateOrder(id, status);
         return new ResponseEntity<>(productSave, HttpStatus.OK);
     }
