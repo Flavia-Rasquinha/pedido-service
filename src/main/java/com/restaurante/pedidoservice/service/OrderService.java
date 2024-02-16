@@ -22,22 +22,23 @@ public class OrderService {
     private final ObjectMapper modelMapper;
     private final Producer producer;
 
-    public OrderDto createOrder(OrderDto order) throws JsonProcessingException {
+    public OrderDto createOrder(String topic, OrderDto order) throws JsonProcessingException {
         var orderEntity = modelMapper.convertValue(order, OrderEntity.class);
 
         OrderEntity saveOrder = orderRepository.save(orderEntity);
 
-        this.producer.sendMessage(saveOrder);
+        this.producer.sendMessage(topic, saveOrder);
 
         return modelMapper.convertValue(saveOrder, OrderDto.class);
     }
 
-    public OrderDto updateOrder(String orderId, OrderDto order) {
+    public OrderDto updateOrder(String orderId, String status) {
+        var order = validateOrderId(orderId);
         OrderEntity updateOrder = OrderEntity.builder()
                 .id(orderId)
-                .items(order.items())
-                .totalValue(order.totalValue())
-                .status(order.status())
+                .items(order.getItems())
+                .totalValue(order.getTotalValue())
+                .status(status)
                 .build();
 
         return modelMapper.convertValue(orderRepository.save(updateOrder), OrderDto.class);

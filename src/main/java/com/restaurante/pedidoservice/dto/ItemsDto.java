@@ -1,7 +1,10 @@
 package com.restaurante.pedidoservice.dto;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 
-public record ItemsDto(Long id, String name, int amount, BigDecimal value) {
+@Builder
+public record ItemsDto(Long id, String idIngredient,String idDish, int amount, BigDecimal value) {
 
 }
