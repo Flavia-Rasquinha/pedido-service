@@ -8,6 +8,8 @@ import com.restaurante.pedidoservice.exception.OrderNotFoundException;
 import com.restaurante.pedidoservice.producer.Producer;
 import com.restaurante.pedidoservice.repository.OrderRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,21 +20,26 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class OrderService {
 
+    private final Logger logger = LoggerFactory.getLogger(OrderService.class);
     private OrderRepository orderRepository;
     private final ObjectMapper modelMapper;
     private final Producer producer;
 
     public OrderDto createOrder(String topic, OrderDto order) throws JsonProcessingException {
+        logger.info("Iniciando a criação do pedido");
+
         var orderEntity = modelMapper.convertValue(order, OrderEntity.class);
 
         OrderEntity saveOrder = orderRepository.save(orderEntity);
 
         this.producer.sendMessage(topic, saveOrder);
 
+        logger.info("Pedido Enviado, idPedido: {}", saveOrder.getId());
         return modelMapper.convertValue(saveOrder, OrderDto.class);
     }
 
     public OrderDto updateOrder(String orderId, String status) {
+        logger.info("Iniciando a atualização do pedido");
         var order = validateOrderId(orderId);
         OrderEntity updateOrder = OrderEntity.builder()
                 .id(orderId)
@@ -41,7 +48,10 @@ public class OrderService {
                 .status(status)
                 .build();
 
-        return modelMapper.convertValue(orderRepository.save(updateOrder), OrderDto.class);
+        OrderEntity updatePedido = orderRepository.save(updateOrder);
+
+        logger.info("Pedido atualizado, idPedido: {}, para status: {}", updatePedido.getId(), updatePedido.getStatus());
+        return modelMapper.convertValue(updatePedido, OrderDto.class);
     }
     public List<OrderDto> getAllOrders() {
         List<OrderEntity> products = orderRepository.findAll();
