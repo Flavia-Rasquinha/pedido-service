@@ -30,7 +30,6 @@ public interface SwaggerOrderSpec {
     @PostMapping("/order")
     @Transactional
     ResponseEntity<OrderDto> createOrder(
-            @RequestHeader(name = "topic") String topico,
             @RequestBody @Valid OrderDto pedido
     ) throws JsonProcessingException;
 

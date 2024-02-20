@@ -27,7 +27,7 @@ public class OrderService {
     private final ObjectMapper modelMapper;
     private final Producer producer;
 
-    public OrderDto createOrder(String topic, OrderDto order) throws JsonProcessingException {
+    public OrderDto createOrder(OrderDto order) throws JsonProcessingException {
         logger.info("Iniciando a criação do pedido");
 
         var orderEntity = modelMapper.convertValue(order, OrderEntity.class);
@@ -40,7 +40,7 @@ public class OrderService {
 
         OrderEntity saveOrder = orderRepository.save(orderEntity);
 
-        this.producer.sendMessage(topic, saveOrder);
+        this.producer.sendMessage("pedidos", saveOrder);
 
         logger.info("Pedido Enviado, idPedido: {}", saveOrder.getId());
         return modelMapper.convertValue(saveOrder, OrderDto.class);

@@ -24,8 +24,8 @@ public class OrderController implements SwaggerOrderSpec {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<OrderDto> createOrder(@RequestHeader String topic, @RequestBody @Valid OrderDto order) throws JsonProcessingException {
-        var productSave = orderService.createOrder(topic, order);
+    public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid OrderDto order) throws JsonProcessingException {
+        var productSave = orderService.createOrder(order);
         return new ResponseEntity<>(productSave, HttpStatus.CREATED);
     }
 

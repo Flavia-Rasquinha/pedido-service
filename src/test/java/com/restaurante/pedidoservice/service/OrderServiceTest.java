@@ -43,10 +43,13 @@ class OrderServiceTest {
     @Test
     public void createOrderSuccess() throws JsonProcessingException {
 
+        Mockito.when(orderRepository.save(any())).thenReturn(OrderEntity.builder().id("1").status("PRONTO").build());
+        Mockito.when(objectMapper.convertValue(any(), eq(OrderEntity.class))).thenReturn(OrderEntity.builder()
+                .items(Collections.singletonList(ItemsDto.builder().value(BigDecimal.TEN).build())).status("PRONTO").build());
         Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder().status("PRONTO").build());
         OrderDto orderDto = createOrder();
 
-        OrderDto createdOrderDto = orderService.createOrder("pedido", orderDto);
+        OrderDto createdOrderDto = orderService.createOrder(orderDto);
 
         Assertions.assertEquals("PRONTO", createdOrderDto.status());
     }
@@ -56,14 +59,15 @@ class OrderServiceTest {
         Mockito.when(orderRepository.save(any())).thenThrow(NullPointerException.class);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            orderService.createOrder("pedido", null);
+            orderService.createOrder(null);
         });
     }
 
     @Test
     public void updateOrderSuccess() {
 
-        Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().status("PRONTO").build()));
+        Mockito.when(orderRepository.save(any())).thenReturn(OrderEntity.builder().id("1").status("PRONTO").build());
+        Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().id("1").status("PRONTO").build()));
         Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder().status("PRONTO").build());
 
         OrderDto createdOrderDto = orderService.updateOrder("1", "PRONTO");
