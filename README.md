@@ -10,25 +10,25 @@ O Pedido Service é uma aplicação que permite a criação e gerenciamento de p
 - Docker
 - MongoDB
 - Apache Kafka
+ 
+**Servidores Implantados**
 
-**Instruções de Instalação**
-
-1. Certifique-se de ter o Docker instalado.
-2. Clone o repositório.
-3. Execute `docker-compose up -d` para iniciar o MongoDB e o Kafka.
-4. Execute a aplicação Spring Boot.
+- Render pedido-service
+- Render cozinha-service
+- Upstash kafka
+- Atlas mongo
 
 **Configurações**
 
 * Porta da Aplicação: 8080
-* URL do Kafka: localhost:29092
-* URL do MongoDB: mongodb://localhost:27017/local
+* URL do Kafka: choice-corgi-8216-us1-kafka.upstash.io:9092
+* URL do MongoDB: mongodb+srv://flaviarask:<password>@cluster0.zd0tc3l.mongodb.net/restaurante
 
 **Endpoints**
 
 * Criar Pedido:
     * Método: POST
-    * URL: http://localhost:8080/pedidos
+    * URL: https://pedido-service.onrender.com:443/order
     * Exemplo de Corpo da Requisição:
 
 ```json{
@@ -52,7 +52,7 @@ O Pedido Service é uma aplicação que permite a criação e gerenciamento de p
 
 * Endpoint para Atualizar Status do Pedido:
     * Método: PATCH
-    * URL: http://localhost:8080/order/{id}
+    * URL: https://pedido-service.onrender.com:443/order/{id}
     * Corpo da Requisição:
 
    ```json
@@ -62,6 +62,6 @@ O Pedido Service é uma aplicação que permite a criação e gerenciamento de p
 
 *   Obter Status do Pedido:
 * Método: GET
-* URL: http://localhost:8080/order/{id}
+* URL: https://pedido-service.onrender.com:443/order/{id}
 
 

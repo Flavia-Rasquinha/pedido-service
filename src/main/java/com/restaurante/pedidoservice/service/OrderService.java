@@ -12,8 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +31,12 @@ public class OrderService {
         logger.info("Iniciando a criação do pedido");
 
         var orderEntity = modelMapper.convertValue(order, OrderEntity.class);
+
+        AtomicReference<BigDecimal> valueTotal = new AtomicReference<>(BigDecimal.ZERO);
+        orderEntity.getItems().forEach(items -> {
+            valueTotal.set(valueTotal.get().add(items.value()));
+        });
+        orderEntity.setTotalValue(valueTotal.get());
 
         OrderEntity saveOrder = orderRepository.save(orderEntity);
 
