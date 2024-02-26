@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.pedidoservice.dto.ItemsDto;
 import com.restaurante.pedidoservice.dto.OrderDto;
 import com.restaurante.pedidoservice.entity.OrderEntity;
+import com.restaurante.pedidoservice.enums.StatusEnum;
 import com.restaurante.pedidoservice.exception.OrderNotFoundException;
 import com.restaurante.pedidoservice.producer.Producer;
 import com.restaurante.pedidoservice.repository.OrderRepository;
@@ -43,15 +44,15 @@ class OrderServiceTest {
     @Test
     public void createOrderSuccess() throws JsonProcessingException {
 
-        Mockito.when(orderRepository.save(any())).thenReturn(OrderEntity.builder().id("1").status("PRONTO").build());
+        Mockito.when(orderRepository.save(any())).thenReturn(OrderEntity.builder().id("1").status(StatusEnum.READY).build());
         Mockito.when(objectMapper.convertValue(any(), eq(OrderEntity.class))).thenReturn(OrderEntity.builder()
-                .items(Collections.singletonList(ItemsDto.builder().value(BigDecimal.TEN).build())).status("PRONTO").build());
-        Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder().status("PRONTO").build());
+                .items(Collections.singletonList(ItemsDto.builder().value(BigDecimal.TEN).build())).status(StatusEnum.READY).build());
+        Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder().status(StatusEnum.READY).build());
         OrderDto orderDto = createOrder();
 
         OrderDto createdOrderDto = orderService.createOrder(orderDto);
 
-        Assertions.assertEquals("PRONTO", createdOrderDto.status());
+        Assertions.assertEquals(StatusEnum.READY, createdOrderDto.status());
     }
 
     @Test
@@ -66,13 +67,13 @@ class OrderServiceTest {
     @Test
     public void updateOrderSuccess() {
 
-        Mockito.when(orderRepository.save(any())).thenReturn(OrderEntity.builder().id("1").status("PRONTO").build());
-        Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().id("1").status("PRONTO").build()));
-        Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder().status("PRONTO").build());
+        Mockito.when(orderRepository.save(any())).thenReturn(OrderEntity.builder().id("1").status(StatusEnum.READY).build());
+        Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().id("1").status(StatusEnum.READY).build()));
+        Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder().status(StatusEnum.READY).build());
 
-        OrderDto createdOrderDto = orderService.updateOrder("1", "PRONTO");
+        OrderDto createdOrderDto = orderService.updateOrder("1", StatusEnum.READY);
 
-        Assertions.assertEquals("PRONTO", createdOrderDto.status());
+        Assertions.assertEquals(StatusEnum.READY, createdOrderDto.status());
     }
 
     @Test
@@ -80,19 +81,21 @@ class OrderServiceTest {
         Mockito.when(orderRepository.save(any())).thenThrow(OrderNotFoundException.class);
 
         Assertions.assertThrows(OrderNotFoundException.class, () -> {
-            orderService.updateOrder("1", "PRONTO");
+            orderService.updateOrder("1", StatusEnum.READY);
         });
     }
 
     @Test
     public void getOrderByIdSuccess() {
 
-        Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().status("PRONTO").build()));
-        Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder().status("PRONTO").build());
+        Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder()
+                .status(StatusEnum.READY).build()));
+        Mockito.when(objectMapper.convertValue(any(), eq(OrderDto.class))).thenReturn(OrderDto.builder()
+                .status(StatusEnum.READY).build());
 
         OrderDto createdOrderDto = orderService.getOrderById("1");
 
-        Assertions.assertEquals("PRONTO", createdOrderDto.status());
+        Assertions.assertEquals(StatusEnum.READY, createdOrderDto.status());
     }
 
     @Test
@@ -109,9 +112,9 @@ class OrderServiceTest {
 
         List<OrderEntity> mockOrder = Arrays.asList(
                 new OrderEntity("1",Collections.singletonList(ItemsDto.builder()
-                        .amount(1).build()),BigDecimal.ONE, "Solicitado"),
+                        .amount(1).build()),BigDecimal.ONE, StatusEnum.REQUESTED),
                 new OrderEntity("2",Collections.singletonList(ItemsDto.builder()
-                        .amount(1).build()),BigDecimal.ONE, "Solicitado")
+                        .amount(1).build()),BigDecimal.ONE, StatusEnum.REQUESTED)
         );
         Mockito.when(orderRepository.findAll()).thenReturn(mockOrder);
 

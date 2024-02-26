@@ -1,14 +1,12 @@
 package com.restaurante.pedidoservice.dto;
 
-import com.restaurante.pedidoservice.entity.OrderEntity;
+import com.restaurante.pedidoservice.enums.StatusEnum;
 import lombok.Builder;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 @Builder
-public record OrderDto(List<ItemsDto> items, BigDecimal totalValue, String status) {
+public record OrderDto(@Valid List<ItemsDto> items, BigDecimal totalValue, StatusEnum status) {
 
-    public OrderDto(OrderEntity order) {
-        this(order.getItems(), order.getTotalValue(), order.getStatus());
-    }
 }

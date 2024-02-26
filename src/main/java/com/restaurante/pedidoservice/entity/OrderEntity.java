@@ -1,6 +1,7 @@
 package com.restaurante.pedidoservice.entity;
 
 import com.restaurante.pedidoservice.dto.ItemsDto;
+import com.restaurante.pedidoservice.enums.StatusEnum;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,6 +25,6 @@ public class OrderEntity {
     @Field(name = "Valor_Total")
     private BigDecimal totalValue;
     @Field(name = "Status")
-    private String status;
+    private StatusEnum status;
 
 }

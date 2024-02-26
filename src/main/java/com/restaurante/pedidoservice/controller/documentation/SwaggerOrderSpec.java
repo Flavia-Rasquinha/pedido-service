@@ -2,6 +2,7 @@ package com.restaurante.pedidoservice.controller.documentation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.restaurante.pedidoservice.dto.OrderDto;
+import com.restaurante.pedidoservice.enums.StatusEnum;
 import com.restaurante.pedidoservice.exception.OrderNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,7 +47,7 @@ public interface SwaggerOrderSpec {
     @Transactional
     ResponseEntity<OrderDto> updateOrder(
             @PathVariable @NotNull String id,
-            @RequestBody @Valid String status
+            @RequestBody @Valid StatusEnum status
     );
 
     @ApiOperation(value = "Buscar todos os pedidos",
