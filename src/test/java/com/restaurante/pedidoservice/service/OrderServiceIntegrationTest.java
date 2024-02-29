@@ -1,22 +1,17 @@
 package com.restaurante.pedidoservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.restaurante.pedidoservice.dto.ItemsDto;
 import com.restaurante.pedidoservice.dto.OrderDto;
 import com.restaurante.pedidoservice.entity.OrderEntity;
 import com.restaurante.pedidoservice.enums.StatusEnum;
 import com.restaurante.pedidoservice.exception.OrderNotFoundException;
 import com.restaurante.pedidoservice.producer.Producer;
 import com.restaurante.pedidoservice.repository.OrderRepository;
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
-
-import java.math.BigDecimal;
-import java.util.Collections;
 
 @AutoConfigureDataMongo
 @SpringBootTest
@@ -27,9 +22,6 @@ public class OrderServiceIntegrationTest {
 
     @Autowired
     private OrderService orderService;
-
-    @Mock
-    private Producer producer;
 
     @Test
     public void findOrderByIdSucess() {
