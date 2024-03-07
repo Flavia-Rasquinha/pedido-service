@@ -19,7 +19,7 @@ class GlobalExceptionHandlerTest {
     private MockMvc mockMvc;
 
     @Test
-    void handleRuntimeException() throws Exception {
+    void handleRuntimeExceptionShouldReturnNotFound() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(globalExceptionHandler).build();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/order/1"))

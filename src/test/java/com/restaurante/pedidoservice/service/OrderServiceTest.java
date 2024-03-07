@@ -42,7 +42,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void createOrderSuccess() throws JsonProcessingException {
+    public void createOrderWithValidOrderDtoShouldReturnSuccess() throws JsonProcessingException {
 
         Mockito.when(orderRepository.save(any())).thenReturn(OrderEntity.builder().id("1").status(StatusEnum.READY).build());
         Mockito.when(objectMapper.convertValue(any(), eq(OrderEntity.class))).thenReturn(OrderEntity.builder()
@@ -56,7 +56,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void createOrderError() {
+    public void createOrderWithInvalidParamShouldReturnError() {
         Mockito.when(orderRepository.save(any())).thenThrow(NullPointerException.class);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -65,7 +65,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void updateOrderSuccess() {
+    public void updateOrderWithValidIdShouldReturnSucess() {
 
         Mockito.when(orderRepository.save(any())).thenReturn(OrderEntity.builder().id("1").status(StatusEnum.READY).build());
         Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().id("1").status(StatusEnum.READY).build()));
@@ -77,7 +77,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void updateOrderError() {
+    public void updateOrderWithInvalidIdShouldReturnError() {
         Mockito.when(orderRepository.save(any())).thenThrow(OrderNotFoundException.class);
 
         Assertions.assertThrows(OrderNotFoundException.class, () -> {
@@ -86,7 +86,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void getOrderByIdSuccess() {
+    public void getOrderByIdWithValidIdShouldReturnSucess() {
 
         Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder()
                 .status(StatusEnum.READY).build()));
@@ -99,7 +99,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void getOrderByIdError() {
+    public void getOrderByIdWithInvalidIdShouldReturnError() {
         Mockito.when(orderRepository.save(any())).thenThrow(OrderNotFoundException.class);
 
         Assertions.assertThrows(OrderNotFoundException.class, () -> {
@@ -108,7 +108,7 @@ class OrderServiceTest {
     }
 
     @Test
-    public void getOrderSuccess() {
+    public void getOrderWithValidIdShouldReturnSucess() {
 
         List<OrderEntity> mockOrder = Arrays.asList(
                 new OrderEntity("1",Collections.singletonList(ItemsDto.builder()
@@ -125,7 +125,7 @@ class OrderServiceTest {
     }
 
     @Test
-    void deleteOrderSucess() {
+    void deleteOrderWithValidIdShouldReturnSucess() {
         Mockito.when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(OrderEntity.builder().build()));
 
         orderService.deleteOrder("11111");
@@ -137,7 +137,7 @@ class OrderServiceTest {
         OrderDto orderDto = OrderDto.builder()
                 .items(Collections.singletonList(ItemsDto.builder()
                         .id(1l)
-                        .idIngredient("feijao1")
+                        .idProduct("feijao1")
                         .amount(1)
                         .value(BigDecimal.TEN)
                         .build()))

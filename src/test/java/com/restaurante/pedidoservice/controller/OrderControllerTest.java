@@ -50,7 +50,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void createOrderSucessTest() throws Exception {
+    void createOrderWithValidPayloadShouldReturnSucessTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
         OrderDto orderDto = createOrder();
@@ -58,14 +58,13 @@ class OrderControllerTest {
         mockMvc.perform(
                         post("/order")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(payload)
-                                .header("topic", "pedido"))
+                                .content(payload))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andReturn();
     }
 
     @Test
-    void createOrderErrorTest() throws Exception {
+    void createOrderWithInvalidPayloadShouldReturnErrorTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String payload = objectMapper.writeValueAsString("");
@@ -80,7 +79,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void updateOrderSucessTest() throws Exception {
+    void updateOrderWithStatusCanceledShouldReturnSucessTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.patch("/order/{id}", 123)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(StatusEnum.CANCELED)))
@@ -89,18 +88,18 @@ class OrderControllerTest {
     }
 
     @Test
-    void updateOrderErrorTest() throws Exception {
+    void updateOrderWithStatusInvalidShouldReturnErrorTest() throws Exception {
 
         mockMvc.perform(
                         patch("/order/")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content("READY"))
+                                .content("READYY"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
     }
 
     @Test
-    void getOrderByIdSucessTest() throws Exception {
+    void getOrderByIdWithValidIdShouldReturnSucessTest() throws Exception {
         mockMvc.perform(
                         get("/order/1111"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
@@ -108,17 +107,17 @@ class OrderControllerTest {
     }
 
     @Test
-    void getOrderByIdErrorTest() throws Exception {
+    void getOrderByIdWithInvalidIdShouldReturnErrorTest() throws Exception {
         Mockito.when(orderService.getOrderById(any())).thenThrow(OrderNotFoundException.class);
 
         mockMvc.perform(
-                        get("/order/1"))
+                        get("/order/1x"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
     }
 
     @Test
-    void getAllOrdersSuccess() throws Exception {
+    void getAllOrdersWithValidPathShouldReturnSuccessTest() throws Exception {
         mockMvc.perform(get("/order"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -126,7 +125,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void deleteOrderSucessTest() throws Exception {
+    void deleteOrderWithValidPathShouldReturnSuccessTest() throws Exception {
 
         mockMvc.perform(
                         delete("/order/1"))
@@ -135,7 +134,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void deleteOrderErrorTest() throws Exception {
+    void deleteOrderWithInvalidPathShouldReturnErrorTest() throws Exception {
 
         mockMvc.perform(
                         delete("/order"))
@@ -147,7 +146,7 @@ class OrderControllerTest {
         OrderDto orderDto = OrderDto.builder()
                 .items(Collections.singletonList(ItemsDto.builder()
                         .id(1l)
-                        .idIngredient("feijao1")
+                        .idProduct("feijao1")
                         .amount(1)
                         .value(BigDecimal.TEN)
                         .build()))

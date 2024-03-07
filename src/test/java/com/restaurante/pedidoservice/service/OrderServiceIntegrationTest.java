@@ -24,7 +24,7 @@ public class OrderServiceIntegrationTest {
     private OrderService orderService;
 
     @Test
-    public void findOrderByIdSucess() {
+    public void findOrderByIdWithValidIdShouldReturnSuccess() {
         orderRepository.save(OrderEntity.builder().id("1").status(StatusEnum.REQUESTED).build());
         OrderDto orderDto = orderService.getOrderById("1");
 
@@ -32,7 +32,7 @@ public class OrderServiceIntegrationTest {
     }
 
     @Test
-    public void deleteOrderByIdSucess() {
+    public void deleteOrderByIdWithValidIdShouldReturnSuccess() {
         orderRepository.save(OrderEntity.builder().id("1").status(StatusEnum.REQUESTED).build());
         orderService.deleteOrder("1");
 
@@ -42,7 +42,7 @@ public class OrderServiceIntegrationTest {
     }
 
     @Test
-    public void updateOrderByIdSucess() {
+    public void updateOrderByIdWithValidIdShouldReturnSucess() {
         orderRepository.save(OrderEntity.builder().id("1").status(StatusEnum.REQUESTED).build());
         OrderDto orderDto = orderService.updateOrder("1", StatusEnum.READY);
 

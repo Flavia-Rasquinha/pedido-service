@@ -25,7 +25,7 @@ public interface SwaggerOrderSpec {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Pedido criado com sucesso", response = OrderDto.class),
             @ApiResponse(code = 400, message = "Requisição Inválida"),
-            @ApiResponse(code = 500, message = "Erro Interno do Servidor")
+            @ApiResponse(code = 500, message = "Erro Interno do Servidor"),
     })
 
     @PostMapping("/order")

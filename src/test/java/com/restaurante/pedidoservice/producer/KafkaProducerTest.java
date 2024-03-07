@@ -25,7 +25,7 @@ public class KafkaProducerTest {
     }
 
     @Test
-    public void producerSuccess() throws JsonProcessingException {
+    public void producerWithPedidoTopicShouldReturnSuccess() throws JsonProcessingException {
 
         Mockito.when(objectMapper.writeValueAsString(any())).thenReturn("order");
 
@@ -35,7 +35,7 @@ public class KafkaProducerTest {
     }
 
     @Test
-    public void producerError() throws JsonProcessingException {
+    public void producerWithPedidoTopicShouldReturnError() throws JsonProcessingException {
 
         Mockito.when(objectMapper.writeValueAsString(any())).thenThrow(JsonProcessingException.class);
 

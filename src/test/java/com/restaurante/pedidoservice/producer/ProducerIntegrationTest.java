@@ -64,7 +64,7 @@ class ProducerIntegrationTest {
     }
 
     @Test
-    void testWriteToKafka() throws InterruptedException, JsonProcessingException {
+    void testWriteToKafkaShouldSendMessageWithSuccess() throws InterruptedException, JsonProcessingException {
         producer.sendMessage("pedidos","teste");
 
         ConsumerRecord<String, String> message = records.poll(500, TimeUnit.MILLISECONDS);
