@@ -19,7 +19,7 @@
 
 # Sobre
 
-Conforme a proposta do [enunciado](https://github.com/Flavia-Rasquinha/pedido-service#STATEMENT.md) foram desenvolvidos dois microsserviços, o **pedido-service** responsável pela criação e gerenciamento dos pedidos, com comunicação por mensageria com a **[cozinha-service](https://github.com/Flavia-Rasquinha/cozinha-service)**, onde é feito o gerenciamento dos itens da cozinha. Utiliza o Apache Kafka para enviar pedidos para a cozinha-service e aguarda a confirmação do status do pedido.
+Conforme a proposta do [enunciado](/STATEMENT.md) foram desenvolvidos dois microsserviços, o **pedido-service** responsável pela criação e gerenciamento dos pedidos, com comunicação por mensageria com a **[cozinha-service](https://github.com/Flavia-Rasquinha/cozinha-service)**, onde é feito o gerenciamento dos itens da cozinha. Utiliza o Apache Kafka para enviar pedidos para a cozinha-service e aguarda a confirmação do status do pedido.
 
 ### Tecnologias Utilizadas
 - Java 17 + Spring Boot 2.7.2
@@ -48,8 +48,8 @@ docker-compose up -d
 Todos os serviços podem ser acessados online, sejam os microsserviços, ou então o console do Kafka e do MongoDB (estes mediante usuário/senha).
 - [pedido-service](https://pedido-service.onrender.com)
 - [cozinha-service](https://cozinha-service.onrender.com)
-- [kafka](https://console.upstash.com/kafka/37e3fc6c-191d-4ca3-ad46-fdba4fd44dd8/03268c8b-a670-4010-94d7-67b4c2a936e1)
-- [Atlas mongo](https://cloud.mongodb.com/v2/65d3e1126f8bb92563f4e1c5#/clusters)
+- [Kafka Console](https://console.upstash.com/kafka/37e3fc6c-191d-4ca3-ad46-fdba4fd44dd8/03268c8b-a670-4010-94d7-67b4c2a936e1)
+- [Atlas Mongo](https://cloud.mongodb.com/v2/65d3e1126f8bb92563f4e1c5#/clusters)
 
 <br>
 
