@@ -22,7 +22,7 @@ class GlobalExceptionHandlerTest {
     void handleRuntimeExceptionShouldReturnNotFound() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(globalExceptionHandler).build();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/order/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/1"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
