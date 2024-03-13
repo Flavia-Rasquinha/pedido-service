@@ -12,7 +12,5 @@ public record OrderDto(@Valid List<ItemsDto> items,
                        @Schema(description = "Valor total", example = "10.0", implementation = BigDecimal.class)
                        BigDecimal totalValue,
                        @Schema(description = "Status da ordem", example = "REQUESTED", implementation = StatusEnum.class)
-
                        StatusEnum status) {
-
 }
