@@ -28,7 +28,7 @@ public interface SwaggerOrderSpec {
             @ApiResponse(code = 500, message = "Erro Interno do Servidor"),
     })
 
-    @PostMapping("/order")
+    @PostMapping("/orders")
     @Transactional
     ResponseEntity<OrderDto> createOrder(
             @RequestBody @Valid OrderDto pedido
@@ -43,7 +43,7 @@ public interface SwaggerOrderSpec {
             @ApiResponse(code = 404, message = "Pedido não encontrado"),
             @ApiResponse(code = 500, message = "Erro Interno do Servidor")
     })
-    @PatchMapping("/order/{id}")
+    @PatchMapping("/orders/{id}")
     @Transactional
     ResponseEntity<OrderDto> updateOrder(
             @PathVariable @NotNull String id,
@@ -57,7 +57,7 @@ public interface SwaggerOrderSpec {
             @ApiResponse(code = 200, message = "Lista de pedidos recuperada com sucesso", response = OrderDto.class),
             @ApiResponse(code = 500, message = "Erro Interno do Servidor")
     })
-    @GetMapping("/order")
+    @GetMapping("/orders")
     ResponseEntity<List<OrderDto>> findALlOrders();
 
     @ApiOperation(value = "Buscar um pedido por ID",
@@ -69,7 +69,7 @@ public interface SwaggerOrderSpec {
             @ApiResponse(code = 404, message = "Pedido não encontrado"),
             @ApiResponse(code = 500, message = "Erro Interno do Servidor")
     })
-    @GetMapping("/order/{id}")
+    @GetMapping("/orders/{id}")
     ResponseEntity<OrderDto> findOrdertById(@PathVariable @NotNull String id) throws OrderNotFoundException;
 
     @ApiOperation(value = "Excluir um pedido por ID",
@@ -80,7 +80,7 @@ public interface SwaggerOrderSpec {
             @ApiResponse(code = 404, message = "Pedido não encontrado"),
             @ApiResponse(code = 500, message = "Erro Interno do Servidor")
     })
-    @DeleteMapping("/order/{id}")
+    @DeleteMapping("/orders/{id}")
     ResponseEntity<Void> deleteOrder(@PathVariable @NotNull String id) throws OrderNotFoundException;
 }
 

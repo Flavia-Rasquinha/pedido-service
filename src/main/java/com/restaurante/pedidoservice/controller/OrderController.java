@@ -1,7 +1,6 @@
 package com.restaurante.pedidoservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.restaurante.pedidoservice.controller.documentation.SwaggerOrderSpec;
 import com.restaurante.pedidoservice.dto.OrderDto;
 import com.restaurante.pedidoservice.enums.StatusEnum;
 import com.restaurante.pedidoservice.exception.OrderNotFoundException;
@@ -18,7 +17,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController  {
 
     private OrderService orderService;
