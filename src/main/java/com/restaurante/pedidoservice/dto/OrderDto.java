@@ -1,6 +1,7 @@
 package com.restaurante.pedidoservice.dto;
 
 import com.restaurante.pedidoservice.enums.StatusEnum;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -8,11 +9,12 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 @Builder
-public record OrderDto(@Valid List<ItemsDto> items,
-                       @Schema(description = "Valor total", example = "10.0", implementation = BigDecimal.class)
+public record OrderDto(@ApiModelProperty(hidden = true)
+                       String id,
+                       @Valid List<ItemsDto> items,
+                       @ApiModelProperty(hidden = true)
                        BigDecimal totalValue,
-                       @Schema(description = "Status da ordem", example = "REQUESTED", implementation = StatusEnum.class)
-
+                       @ApiModelProperty(hidden = true)
                        StatusEnum status) {
 
 }
