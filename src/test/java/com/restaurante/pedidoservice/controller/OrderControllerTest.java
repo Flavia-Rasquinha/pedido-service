@@ -3,7 +3,6 @@ package com.restaurante.pedidoservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.pedidoservice.dto.ItemsDto;
 import com.restaurante.pedidoservice.dto.OrderDto;
-import com.restaurante.pedidoservice.entity.OrderEntity;
 import com.restaurante.pedidoservice.enums.StatusEnum;
 import com.restaurante.pedidoservice.exception.OrderNotFoundException;
 import com.restaurante.pedidoservice.service.OrderService;
@@ -23,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -56,7 +54,7 @@ class OrderControllerTest {
         OrderDto orderDto = createOrder();
         String payload = objectMapper.writeValueAsString(orderDto);
         mockMvc.perform(
-                        post("/order")
+                        post("/orders")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(payload))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
@@ -70,7 +68,7 @@ class OrderControllerTest {
         String payload = objectMapper.writeValueAsString("");
 
         mockMvc.perform(
-                        post("/order")
+                        post("/orders")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(payload)
                                 .header("topic", ""))
@@ -80,7 +78,7 @@ class OrderControllerTest {
 
     @Test
     void updateOrderWithStatusCanceledShouldReturnSucessTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.patch("/order/{id}", 123)
+        mockMvc.perform(MockMvcRequestBuilders.patch("/orders/{id}", 123)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(StatusEnum.CANCELED)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -91,7 +89,7 @@ class OrderControllerTest {
     void updateOrderWithStatusInvalidShouldReturnErrorTest() throws Exception {
 
         mockMvc.perform(
-                        patch("/order/")
+                        patch("/orders/")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("READYY"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
@@ -101,7 +99,7 @@ class OrderControllerTest {
     @Test
     void getOrderByIdWithValidIdShouldReturnSucessTest() throws Exception {
         mockMvc.perform(
-                        get("/order/1111"))
+                        get("/orders/1111"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andReturn();
     }
@@ -111,14 +109,14 @@ class OrderControllerTest {
         Mockito.when(orderService.getOrderById(any())).thenThrow(OrderNotFoundException.class);
 
         mockMvc.perform(
-                        get("/order/1x"))
+                        get("/orders/1x"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
     }
 
     @Test
     void getAllOrdersWithValidPathShouldReturnSuccessTest() throws Exception {
-        mockMvc.perform(get("/order"))
+        mockMvc.perform(get("/orders"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -128,7 +126,7 @@ class OrderControllerTest {
     void deleteOrderWithValidPathShouldReturnSuccessTest() throws Exception {
 
         mockMvc.perform(
-                        delete("/order/1"))
+                        delete("/orders/1"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andReturn();
     }
@@ -137,7 +135,7 @@ class OrderControllerTest {
     void deleteOrderWithInvalidPathShouldReturnErrorTest() throws Exception {
 
         mockMvc.perform(
-                        delete("/order"))
+                        delete("/orders"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
     }

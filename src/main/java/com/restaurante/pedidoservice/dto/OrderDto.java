@@ -15,6 +15,6 @@ public record OrderDto(@ApiModelProperty(hidden = true)
                        @ApiModelProperty(hidden = true)
                        BigDecimal totalValue,
                        @ApiModelProperty(hidden = true)
+                       @Schema(description = "Status da ordem", example = "REQUESTED", implementation = StatusEnum.class)
                        StatusEnum status) {
-
 }
