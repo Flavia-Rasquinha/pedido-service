@@ -3,6 +3,7 @@ package com.restaurante.pedidoservice.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,7 +18,7 @@ public class SchedulerService {
     private final HealthEndpoint healthEndpoint;
     private static final Logger logger = LoggerFactory.getLogger(SchedulerService.class);
 
-    @Scheduled(fixedRate = 900000)
+    @Scheduled(fixedRateString = "${scheduler.time}")
     public void schedulerAliveApp() {
 
         logger.info("Checking if the app is still alive at: {}", LocalDateTime.now());
